@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-app
+spec:
+  replicas: 1 # Number of replicas to create
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend-app
+        image: surlalwani/zocketfront:latest
+        ports:
+        - containerPort: 80 # Port number to expose
+        resources:
+          requests:
+            cpu: "100m"  # Specify the CPU request (e.g., 100 milli-CPUs)
+          limits:
+            cpu: "200m"
+ 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-app-service
+spec:
+  type: ClusterIP
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
